@@ -1,0 +1,25 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./build",
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "commonJS",
+    "target": "es2022",
+    "types": ["node"],
+
+    // and npm install -D @types/node
+
+    // Style Options
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
