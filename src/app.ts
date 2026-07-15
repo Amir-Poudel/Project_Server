@@ -4,6 +4,7 @@ import { errorHandler } from "./middlewares/errorhandler.middleware";
 
 //* importing routes
 import authRoutes from "./Routes/auth.routes";
+import brandRoutes from "./Routes/brand.routes";
 
 //*express app instance
 const app = express();
@@ -23,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 //!using routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/brands", brandRoutes);
 // app.use("/api/v2/auth",authRoutes);
 
 //!using path not found route

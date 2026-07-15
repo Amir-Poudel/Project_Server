@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { MongooseError } from "mongoose";
 
 export const errorHandler = (
   error: any,
@@ -13,8 +12,7 @@ export const errorHandler = (
   const success = false;
 
   // if (error instanceof MongooseError) {
-  if (error?.cause?.code === 11000)
-  {
+  if (error?.cause?.code === 11000) {
     statusCode = 409;
   }
 

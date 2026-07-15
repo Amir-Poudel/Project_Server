@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import User from "../Models/user.model";
 import { hashPassword, comparePassword } from "../utils/bcrypt.utils";
 import AppError from "../utils/appError.utils";
+import { sendResponse } from "../utils/sendResponse.utils";
+import { catchAsync } from "../utils/catchAsync.utils";
 
 //*register
 export const register = async (
@@ -68,14 +70,10 @@ export const register = async (
 };
 
 //*login
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
+export const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    
     const { email, password } = req.body;
-
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
@@ -104,7 +102,5 @@ export const login = async (
       data: rest,
       statusCode: 201,
     });
-  } catch (error) {
-    next(error);
-  }
-};
+  },
+);
