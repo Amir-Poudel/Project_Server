@@ -6,13 +6,9 @@ import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 
 //*register
-export const register = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { full_name, email, password } = req.body;
+export const register = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { full_name, email, password, user_name } = req.body;
 
     if (!full_name) {
       // const error: any = new Error("full_name is required");
@@ -37,7 +33,7 @@ export const register = async (
       throw new AppError("Password is required", 400);
     }
 
-    const user = new User({ full_name, email });
+    const user = new User({ full_name, email, user_name });
 
     //*password hash
     const hash = await hashPassword(password);
@@ -64,15 +60,12 @@ export const register = async (
       data: rest,
       statusCode: 201,
     });
-  } catch (error) {
-    next(error);
-  }
-};
+  },
+);
 
 //*login
 export const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select("+password");
 
@@ -87,10 +80,10 @@ export const login = catchAsync(
       throw new AppError("invalid credentials", 400);
     }
 
-    //*convert user doc to object
+    //*converting user doc to object
     const { password: _, ...rest } = user.toObject();
 
-    //*success response
+    //*send success response
     // res.status(201).json({
     //   message:"Login success!",
     //   data: rest,

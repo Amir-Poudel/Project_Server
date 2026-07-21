@@ -29,7 +29,7 @@ app.use("/api/v1/brands", brandRoutes);
 
 //!using path not found route
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const message = `can not $(req.method) on $(req.path)`;
+  const message = `can not ${req.method} on ${req.path}`;
   const error: any = new Error(message);
   error.status = "fail";
   error.statusCode = 404;

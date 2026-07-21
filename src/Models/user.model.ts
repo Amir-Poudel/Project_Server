@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     user_name: {
       type: String,
-      required: [true, "full_name is required"],
+      required: [true, "user_name is required"],
       trim: true,
       minLength: [3, "name must be 3 characters long."],
     },
