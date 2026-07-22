@@ -4,6 +4,8 @@ import { hashPassword, comparePassword } from "../utils/bcrypt.utils";
 import AppError from "../utils/appError.utils";
 import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
+import { generateJwtToken } from "../utils/jwt.utils";
+import { ENV_CONFIG } from "../config/env.config";
 
 //*register
 export const register = catchAsync(
@@ -80,8 +82,24 @@ export const login = catchAsync(
       throw new AppError("invalid credentials", 400);
     }
 
-    //*converting user doc to object
+    //todo:generate jwt token ->
+    const access_token = generateJwtToken({
+      _id: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    //*convert user doc to object
     const { password: _, ...rest } = user.toObject();
+
+    //* set-cookie header ->
+    res.cookie("access_token",access_token,{
+      maxAge: Number(ENV_CONFIG.COOKIE_EXPIRY?? "7")*24*60*60*1000,
+      httpOnly: ENV_CONFIG.NODE_ENV === "development"? false:true,
+      secure:ENV_CONFIG.NODE_ENV === "development"? false:true,
+      sameSite:ENV_CONFIG.NODE_ENV === "development"? false:true,
+
+    })
 
     //*send success response
     // res.status(201).json({
@@ -92,7 +110,7 @@ export const login = catchAsync(
     // });
     sendResponse(res, {
       message: "Login success",
-      data: rest,
+      data: { user: rest, access_token },
       statusCode: 201,
     });
   },

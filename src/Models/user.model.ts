@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
-enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-}
+
 
 //*user interface
 interface IUser extends Document {
