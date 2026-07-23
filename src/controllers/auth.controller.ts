@@ -6,7 +6,6 @@ import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import { generateJwtToken } from "../utils/jwt.utils";
 import { ENV_CONFIG } from "../config/env.config";
-import { file } from "zod";
 import { uploadFileToCloudinary } from "../utils/cloudinary.utils";
 
 //*register
@@ -101,7 +100,7 @@ export const login = catchAsync(
 
     //todo:generate jwt token ->
     const access_token = generateJwtToken({
-      _id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
     });
@@ -114,7 +113,7 @@ export const login = catchAsync(
       maxAge: Number(ENV_CONFIG.COOKIE_EXPIRY ?? "7") * 24 * 60 * 60 * 1000,
       httpOnly: ENV_CONFIG.NODE_ENV === "development" ? false : true,
       secure: ENV_CONFIG.NODE_ENV === "development" ? false : true,
-      sameSite: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+      sameSite: ENV_CONFIG.NODE_ENV === "development" ? "lax" : "none",
     });
 
     //*send success response

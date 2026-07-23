@@ -13,8 +13,11 @@ export const ENV_CONFIG = {
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET!!,
 
   //!jwt
+  JWT_EXPIRES_IN:process.env.JWT_EXPIRES_IN!!,
+  JWT_SECRET_KEY:process.env.JWT_SECRET_KEY!!,
 
   //!cookies
+  COOKIE_EXPIRY: process.env.COOKIE_EXPIRY ?? 7,
 
   //!smtp
 };
