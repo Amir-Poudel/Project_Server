@@ -10,10 +10,10 @@ import mongoose from "mongoose";
 interface IBrand extends Document {
   name: string;
   email: string;
-  logo?: {
-    path:string;
-    public_id:string;
-  } ;
+  logo: {
+    path: string;
+    public_id: string;
+  };
   description?: string;
 }
 
@@ -33,7 +33,7 @@ const brandSchema = new mongoose.Schema<IBrand>(
     },
     logo: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   { timestamps: true },

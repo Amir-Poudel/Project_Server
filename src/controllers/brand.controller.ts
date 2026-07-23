@@ -89,7 +89,7 @@ export const update = catchAsync(async (req: Request, res: Response) => {
 
   if (file) {
     //!delete old logo
-    deleteFileFromcloudinary(brand.logo.public_id);
+    await deleteFileFromcloudinary(brand.logo.public_id);
 
     //*upload new logo
     const { path, public_id } = await uploadFileToCloudinary(file, "/brands");
@@ -115,7 +115,8 @@ export const remove = catchAsync(async (req, res) => {
 
   const brand = await Brand.findOne({ _id: id });
   if (!brand) throw new AppError("brand not found", 404);
-  deleteFileFromcloudinary(brand.logo.public_id);
+  
+  await deleteFileFromcloudinary(brand.logo.public_id);
 
   await brand.deleteOne();
 
