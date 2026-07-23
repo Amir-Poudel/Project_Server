@@ -6,43 +6,60 @@ import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import { generateJwtToken } from "../utils/jwt.utils";
 import { ENV_CONFIG } from "../config/env.config";
+import { file } from "zod";
+import { uploadFileToCloudinary } from "../utils/cloudinary.utils";
 
 //*register
 export const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { full_name, email, password, user_name } = req.body;
+    const { full_name, user_name, email, password } = req.body;
 
-    if (!full_name) {
-      // const error: any = new Error("full_name is required");
-      // error.status = "fail";
-      // error.statusCode = 400;
-      // throw error;
-      throw new AppError("Full_name is required", 400);
-    }
+    // if (!full_name) {
+    // const error: any = new Error("full_name is required");
+    // error.status = "fail";
+    // error.statusCode = 400;
+    // throw error;
+    //   throw new AppError("Full_name is required", 400);
+    // }
 
-    if (!email) {
-      // const error: any = new Error("Email is required");
-      // error.status = "fail";
-      // error.statusCode = 400;
-      // throw error;
-      throw new AppError("Email is required", 400);
-    }
-    if (!password) {
-      // const error: any = new Error("Password is required");
-      // error.status = "fail";
-      // error.statusCode = 400;
-      // throw error;
-      throw new AppError("Password is required", 400);
-    }
+    // if (!email) {
+    // const error: any = new Error("Email is required");
+    // error.status = "fail";
+    // error.statusCode = 400;
+    // throw error;
+    //   throw new AppError("Email is required", 400);
+    // }
+    // if (!password) {
+    // const error: any = new Error("Password is required");
+    // error.status = "fail";
+    // error.statusCode = 400;
+    // throw error;
+    //   throw new AppError("Password is required", 400);
+    // }
 
-    const user = new User({ full_name, email, user_name });
+    const user = new User({ full_name, user_name, email });
 
     //*password hash
     const hash = await hashPassword(password);
     user.password = hash;
     // user.password = password;
 
+    const file = req.file;
+
     //*upload profile image
+    if (file) {
+      // user.profile_image = file.path;
+      // user.profile_image = '/uploads/1.jpg';
+      //user.profile_image = {path:'https://cloudinary.com/uploads/1.jpg, public_id:uploads/1.jpg};
+      const { path, public_id } = await uploadFileToCloudinary(
+        file,
+        "/profile_images",
+      );
+      user.profile_image = {
+        path,
+        public_id,
+      };
+    }
 
     //*save user
     await user.save();
@@ -93,13 +110,12 @@ export const login = catchAsync(
     const { password: _, ...rest } = user.toObject();
 
     //* set-cookie header ->
-    res.cookie("access_token",access_token,{
-      maxAge: Number(ENV_CONFIG.COOKIE_EXPIRY?? "7")*24*60*60*1000,
-      httpOnly: ENV_CONFIG.NODE_ENV === "development"? false:true,
-      secure:ENV_CONFIG.NODE_ENV === "development"? false:true,
-      sameSite:ENV_CONFIG.NODE_ENV === "development"? false:true,
-
-    })
+    res.cookie("access_token", access_token, {
+      maxAge: Number(ENV_CONFIG.COOKIE_EXPIRY ?? "7") * 24 * 60 * 60 * 1000,
+      httpOnly: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+      secure: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+      sameSite: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+    });
 
     //*send success response
     // res.status(201).json({

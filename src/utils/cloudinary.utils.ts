@@ -7,20 +7,22 @@ export const uploadFileToCloudinary = async (
   dir = "/",
 ) => {
   try {
-    const uploadFolder = "mern_project"+ dir;
+    const uploadFolder = "mern_project" + dir;
 
-    const {secure_url:path,public_id} = await cloudinary.uploader.upload(file.path,{
-        unique_filename:true,
+    const { secure_url: path, public_id } = await cloudinary.uploader.upload(
+      file.path,
+      {
+        unique_filename: true,
         folder: uploadFolder,
-    });
+      },
+    );
 
     //*delete from local uploads folder
-    if(fs.existsSync(file.path)){
-        fs.unlinkSync(file.path)
+    if (fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
     }
 
-    return{path,public_id}
-
+    return { path, public_id };
   } catch (error) {
     console.log(error);
     throw new AppError("Something went wrong", 500);
@@ -28,3 +30,15 @@ export const uploadFileToCloudinary = async (
 };
 
 //*delete file from cloudinary
+
+export const deleteFileFromcloudinary = async (
+  public_id: string,
+) => {
+  try {
+    await cloudinary.uploader.destroy(public_id);
+    return true;
+  } catch (error) {
+    console.log(error);
+    throw new AppError("Something went wrong", 500);
+  }
+};

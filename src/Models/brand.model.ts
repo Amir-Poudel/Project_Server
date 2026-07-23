@@ -10,7 +10,10 @@ import mongoose from "mongoose";
 interface IBrand extends Document {
   name: string;
   email: string;
-  logo: string;
+  logo?: {
+    path:string;
+    public_id:string;
+  } ;
   description?: string;
 }
 
