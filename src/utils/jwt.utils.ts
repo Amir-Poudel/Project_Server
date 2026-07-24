@@ -14,3 +14,12 @@ export const generateJwtToken = (payload: IJwtPayload) => {
     throw error;
   }
 };
+
+export const verifyToken = (token: string) => {
+  try {
+    return jwt.verify(token, ENV_CONFIG.JWT_SECRET) as IJwtPayload;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

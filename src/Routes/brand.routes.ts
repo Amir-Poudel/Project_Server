@@ -1,12 +1,13 @@
 import express from "express";
 import { create, getAll, getById, remove, update } from "../controllers/brand.controller";
 import { multerUploader } from "../middlewares/multer.middleware";
+import { authenticate } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 const upload = multerUploader();
 
 //*getAll
-router.get("/", getAll);
+router.get("/",authenticate(), getAll);
 
 //*get by Id
 router.get('/:id',getById);

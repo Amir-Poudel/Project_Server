@@ -1,15 +1,19 @@
 import express, { NextFunction, Request, Response } from "express";
 import { errorHandler } from "./middlewares/errorhandler.middleware";
+import cookieParser from "cookie-parser";
 //npm i -D @types/express //npm i --save-dev @types/express
 
 //* importing routes
 import authRoutes from "./Routes/auth.routes";
 import brandRoutes from "./Routes/brand.routes";
+import categoryRoutes from "./Routes/category.routes"
+
 
 //*express app instance
 const app = express();
 
 //!using middleware
+app.use(cookieParser());
 app.use(express.json());
 
 //! health check route
@@ -25,6 +29,8 @@ app.get("/", (req: Request, res: Response) => {
 //!using routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/brands", brandRoutes);
+app.use("/api/v1/categories", categoryRoutes);
+
 // app.use("/api/v2/auth",authRoutes);
 
 //!using path not found route
