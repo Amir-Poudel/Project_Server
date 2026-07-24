@@ -4,7 +4,8 @@ import { IJwtPayload } from "../types/jwt.interface";
 
 export const generateJwtToken = (payload: IJwtPayload) => {
   try {
-    const token = jwt.sign(payload, ENV_CONFIG.JWT_SECRET_KEY, {
+    const token = jwt.sign(payload, ENV_CONFIG.JWT_SECRET, {
+      // algorithm: ES256
       expiresIn: ENV_CONFIG.JWT_EXPIRES_IN as any,
     });
     return token;

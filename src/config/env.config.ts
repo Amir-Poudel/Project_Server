@@ -14,10 +14,16 @@ export const ENV_CONFIG = {
 
   //!jwt
   JWT_EXPIRES_IN:process.env.JWT_EXPIRES_IN!!,
-  JWT_SECRET_KEY:process.env.JWT_SECRET_KEY!!,
+  JWT_SECRET:process.env.JWT_SECRET!!,
 
   //!cookies
   COOKIE_EXPIRY: process.env.COOKIE_EXPIRY ?? 7,
 
   //!smtp
-};
+SMTP_HOST: process.env.SMTP_HOST,
+SMTP_PORT:Number(process.env.SMTP_PORT)??587,
+SMTP_SERVICE: process.env.SMTP_SERVICE,
+SMTP_USER:process.env.SMTP_USER,
+SMTP_PASS: process.env.SMTP_PASS,
+SMTP_MAIL_FROM: process.env.SMTP_MAIL_FROM,
+}
