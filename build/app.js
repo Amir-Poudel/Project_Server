@@ -8,9 +8,9 @@ const errorhandler_middleware_1 = require("./middlewares/errorhandler.middleware
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 //npm i -D @types/express //npm i --save-dev @types/express
 //* importing routes
-const auth_routes_1 = __importDefault(require("./Routes/auth.routes"));
-const brand_routes_1 = __importDefault(require("./Routes/brand.routes"));
-const category_routes_1 = __importDefault(require("./Routes/category.routes"));
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const brand_routes_1 = __importDefault(require("./routes/brand.routes"));
+const category_routes_1 = __importDefault(require("./routes/category.routes"));
 //*express app instance
 const app = (0, express_1.default)();
 //!using middleware

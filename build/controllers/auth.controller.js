@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changePassword = exports.logout = exports.getProfile = exports.login = exports.register = void 0;
-const user_model_1 = __importDefault(require("../Models/user.model"));
+const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_utils_1 = require("../utils/bcrypt.utils");
 const appError_utils_1 = __importDefault(require("../utils/appError.utils"));
 const sendResponse_utils_1 = require("../utils/sendResponse.utils");
