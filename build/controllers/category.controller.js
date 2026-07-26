@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.remove = exports.update = exports.create = exports.getById = exports.getAll = void 0;
 const catchAsync_utils_1 = require("../utils/catchAsync.utils");
-const category_model_1 = __importDefault(require("../Models/category.model"));
+const category_model_1 = __importDefault(require("../models/category.model"));
 const sendResponse_utils_1 = require("../utils/sendResponse.utils");
 const appError_utils_1 = __importDefault(require("../utils/appError.utils"));
 const cloudinary_utils_1 = require("../utils/cloudinary.utils");

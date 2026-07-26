@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../Models/user.model";
+import User from "../models/user.model";
 import { hashPassword, comparePassword } from "../utils/bcrypt.utils";
 import AppError from "../utils/appError.utils";
 import { sendResponse } from "../utils/sendResponse.utils";

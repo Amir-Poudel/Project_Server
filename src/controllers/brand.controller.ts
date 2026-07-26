@@ -1,7 +1,7 @@
 //*get all
 
 import { NextFunction, request, Request, Response } from "express";
-import Brand from "../Models/brand.model";
+import Brand from "../models/brand.model";
 import { sendResponse } from "../utils/sendResponse.utils";
 import { catchAsync } from "../utils/catchAsync.utils";
 import AppError from "../utils/appError.utils";
@@ -115,7 +115,7 @@ export const remove = catchAsync(async (req, res) => {
 
   const brand = await Brand.findOne({ _id: id });
   if (!brand) throw new AppError("brand not found", 404);
-  
+
   await deleteFileFromcloudinary(brand.logo.public_id);
 
   await brand.deleteOne();

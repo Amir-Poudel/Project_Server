@@ -4,9 +4,9 @@ import cookieParser from "cookie-parser";
 //npm i -D @types/express //npm i --save-dev @types/express
 
 //* importing routes
-import authRoutes from "./Routes/auth.routes";
-import brandRoutes from "./Routes/brand.routes";
-import categoryRoutes from "./Routes/category.routes"
+import authRoutes from "./routes/auth.routes";
+import brandRoutes from "./routes/brand.routes";
+import categoryRoutes from "./routes/category.routes"
 
 
 //*express app instance
