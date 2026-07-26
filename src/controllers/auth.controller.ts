@@ -7,6 +7,11 @@ import { catchAsync } from "../utils/catchAsync.utils";
 import { generateJwtToken } from "../utils/jwt.utils";
 import { ENV_CONFIG } from "../config/env.config";
 import { uploadFileToCloudinary } from "../utils/cloudinary.utils";
+import {
+  generateAccountCreatedHtml,
+  generateLoginSuccessHtml,
+} from "../utils/emailTemplate.utlis";
+import { sendEmail } from "../utils/sendEmail.utils";
 
 //*register
 export const register = catchAsync(
@@ -63,6 +68,17 @@ export const register = catchAsync(
     //*save user
     await user.save();
 
+    //*send account created email
+    sendEmail({
+      to: user.email,
+      subject: "Account created",
+      html: generateAccountCreatedHtml({
+        full_name: user.full_name,
+        email: user.email,
+        createdAt: new Date(Date.now()),
+      }),
+    });
+
     //*converting mongodb doc to js object
     const { password: user_pass, ...rest } = user.toObject();
 
@@ -116,6 +132,18 @@ export const login = catchAsync(
       sameSite: ENV_CONFIG.NODE_ENV === "development" ? "lax" : "none",
     });
 
+    //*send login detected email
+    sendEmail({
+      to: user.email,
+      subject: "New login Detected",
+      html: generateLoginSuccessHtml({
+        full_name: user.full_name,
+        email: user.email,
+        loginAt: new Date(Date.now()),
+        userAgent: req.headers["user-agent"] as string,
+      }),
+    });
+
     //*send success response
     // res.status(201).json({
     //   message:"Login success!",
@@ -130,3 +158,58 @@ export const login = catchAsync(
     });
   },
 );
+
+//*get profile
+export const getProfile = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user._id;
+  const user = await User.findById(id);
+
+  if (!user) throw new AppError("user not found", 404);
+
+  sendResponse(res, {
+    message: "profile fetched",
+    data: user,
+    statusCode: 200,
+  });
+});
+
+//*logout
+export const logout = catchAsync(async (req, res) => {
+  res.clearCookie("access_token", {
+    httpOnly: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+    secure: ENV_CONFIG.NODE_ENV === "development" ? false : true,
+    sameSite: ENV_CONFIG.NODE_ENV === "development" ? "lax" : "none",
+  });
+  sendResponse(res, {
+    message: "logout successful",
+    statusCode: 200,
+    data: null,
+  });
+});
+
+//*change password
+
+export const changePassword = catchAsync(async (req, res) => {
+  const { old_password, new_password } = req.body;
+
+  if (!old_password) throw new AppError("old password is required", 400);
+  if (!new_password) throw new AppError("new password is required", 400);
+
+  const user = await User.findById(req.user._id).select("+password");
+
+  if (!user) throw new AppError("user not found", 404);
+
+  const isPasswordMatched = await comparePassword(old_password, user.password);
+  if (!isPasswordMatched) {
+    throw new AppError("old password is incorrect", 400);
+  }
+
+  user.password = await hashPassword(new_password);
+  await user.save();
+
+  sendResponse(res, {
+    message: "password changed successfully",
+    data: null,
+    statusCode: 200,
+  });
+});

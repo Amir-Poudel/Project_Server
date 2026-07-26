@@ -28,6 +28,12 @@ export const authenticate = (roles?: Role[]) => {
         throw new AppError("can not access this resource", 403);
       }
 
+      req.user = {
+        _id: decoded_data._id,
+        email: decoded_data.email,
+        role: decoded_data.role,
+      };
+
       next();
     } catch (error) {
       next(error);

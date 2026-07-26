@@ -20,7 +20,7 @@ export const sendEmail = async ({
 }: IMailOption) => {
   try {
     const messageOption: any = {
-      to: "aarati.poudel2000@gmail.com",
+      to: to,
       from: ENV_CONFIG.SMTP_MAIL_FROM,
       subject: subject,
       html: html,
