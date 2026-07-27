@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorHandler = void 0;
 const jsonwebtoken_1 = require("jsonwebtoken");
 const errorHandler = (error, req, res, next) => {
     let statusCode = error?.statusCode ?? 500;
@@ -28,4 +27,4 @@ const errorHandler = (error, req, res, next) => {
         errors: error?.errors ?? null,
     });
 };
-exports.errorHandler = errorHandler;
+exports.default = errorHandler;

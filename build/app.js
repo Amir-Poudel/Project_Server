@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const errorhandler_middleware_1 = require("./middlewares/errorhandler.middleware");
+const errorhandler_middleware_1 = __importDefault(require("./middlewares/errorhandler.middleware"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 //npm i -D @types/express //npm i --save-dev @types/express
 //* importing routes
@@ -45,5 +45,5 @@ app.use((req, res, next) => {
     next(error);
 });
 //!error handler middleware
-app.use(errorhandler_middleware_1.errorHandler);
+app.use(errorhandler_middleware_1.default);
 exports.default = app;

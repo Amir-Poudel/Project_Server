@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
-export const errorHandler = (
+const errorHandler = (
   error: any,
   req: Request,
   res: Response,
@@ -17,11 +17,11 @@ export const errorHandler = (
     statusCode = 409;
   }
 
-  if(error instanceof JsonWebTokenError){
-    message ="Invalid Token";
+  if (error instanceof JsonWebTokenError) {
+    message = "Invalid Token";
     statusCode = 401;
   }
-  if (error instanceof TokenExpiredError){
+  if (error instanceof TokenExpiredError) {
     message = "Token Expired";
     statusCode = 401;
   }
@@ -35,3 +35,5 @@ export const errorHandler = (
     errors: error?.errors ?? null,
   });
 };
+
+export default errorHandler;

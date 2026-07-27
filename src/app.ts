@@ -1,13 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
-import { errorHandler } from "./middlewares/errorhandler.middleware";
+import errorHandler from "./middlewares/errorhandler.middleware";
 import cookieParser from "cookie-parser";
 //npm i -D @types/express //npm i --save-dev @types/express
 
 //* importing routes
 import authRoutes from "./routes/auth.routes";
 import brandRoutes from "./routes/brand.routes";
-import categoryRoutes from "./routes/category.routes"
-
+import categoryRoutes from "./routes/category.routes";
 
 //*express app instance
 const app = express();
