@@ -25,3 +25,4 @@ router.post("/chnage_password",authenticate(),changePassword);
 
 
 export default router;
+
